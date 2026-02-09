@@ -1,146 +1,233 @@
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Meu Portfólio Vivo 📸</title>
-    <style>
-        /* (Mantive seus estilos originais para poupar espaço, adicionei apenas o necessário) */
-        :root { --primary: #4A90E2; --bg: #F0F2F5; --danger: #ef4444; }
-        body { font-family: sans-serif; background: var(--bg); margin: 0; padding-bottom: 50px; }
-        .container { max-width: 600px; margin: 0 auto; padding: 20px; }
-        header { background: white; padding: 10px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 10; }
-        .editor { background: white; padding: 20px; border-radius: 12px; margin-bottom: 20px; border-top: 4px solid var(--primary); }
-        .card-post { background: white; border-radius: 12px; margin-bottom: 20px; overflow: hidden; border: 1px solid #ddd; }
-        .post-header { padding: 10px; display: flex; justify-content: space-between; align-items: center; }
-        .post-image { width: 100%; display: block; max-height: 400px; object-fit: cover; }
-        .post-content { padding: 15px; }
-        input, textarea { width: 100%; margin-bottom: 10px; padding: 10px; box-sizing: border-box; border: 1px solid #ddd; border-radius: 8px; }
-        .btn-save { background: var(--primary); color: white; border: none; width: 100%; padding: 12px; border-radius: 8px; cursor: pointer; font-weight: bold; }
-        .btn-delete { color: var(--danger); cursor: pointer; border: none; background: none; font-weight: bold; }
-        .hidden { display: none; }
-        #user-photo { width: 35px; border-radius: 50%; }
-    </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meu Currículo Vivo 🎒</title>
+    
+    <style>
+        /* --- ESTILO (CSS) --- */
+        :root {
+            --primary: #4A90E2;
+            --secondary: #FFD166;
+            --accent: #06D6A0;
+            --bg: #F8FAFC;
+            --text: #334155;
+        }
+
+        body {
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            margin: 0;
+            padding-bottom: 50px;
+        }
+
+        .container { max-width: 700px; margin: 0 auto; padding: 20px; }
+
+        header {
+            background: white;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
+            padding: 15px 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-content { display: flex; justify-content: space-between; align-items: center; }
+
+        h1 { font-size: 1.5rem; margin: 0; color: var(--primary); }
+
+        .card {
+            background: white;
+            padding: 20px;
+            border-radius: 16px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            margin-bottom: 25px;
+            border-bottom: 4px solid var(--secondary);
+        }
+
+        .input-group input, .input-group textarea {
+            width: 100%;
+            margin-bottom: 12px;
+            padding: 12px;
+            border: 2px solid #E2E8F0;
+            border-radius: 10px;
+            box-sizing: border-box;
+            font-size: 1rem;
+            font-family: inherit;
+        }
+
+        .btn-primary { background: var(--primary); color: white; border: none; padding: 10px 20px; border-radius: 8px; cursor: pointer; font-weight: 600; }
+        .btn-save { background: var(--accent); color: white; border: none; width: 100%; padding: 12px; border-radius: 8px; cursor: pointer; font-size: 1rem; font-weight: bold; }
+        
+        #user-display { display: flex; align-items: center; gap: 10px; }
+        #user-photo { width: 35px; height: 35px; border-radius: 50%; border: 2px solid var(--primary); }
+
+        .experience-item {
+            background: white;
+            padding: 15px;
+            margin-top: 15px;
+            border-radius: 12px;
+            border-left: 6px solid var(--primary);
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            animation: fadeIn 0.5s ease;
+        }
+
+        .experience-item h3 { margin: 0 0 5px 0; color: var(--primary); text-transform: capitalize; }
+        .experience-item p { margin: 0; font-size: 0.95rem; line-height: 1.5; color: #475569; }
+        
+        .hidden { display: none !important; }
+
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+    </style>
 </head>
 <body>
 
-    <header class="container">
-        <h1>📸 Portfólio</h1>
-        <button id="btn-login" style="padding: 5px 15px;">Login Google</button>
-        <div id="user-display" class="hidden">
-            <img id="user-photo" src="">
-            <button id="btn-logout" style="color: red; border: none; background: none; cursor: pointer;">Sair</button>
-        </div>
-    </header>
+    <header>
+        <div class="container header-content">
+            <h1>🎒 Meu Currículo Vivo</h1>
+            <div id="auth-controls">
+                <button id="btn-login" class="btn-primary">Entrar com Google</button>
+                <div id="user-display" class="hidden">
+                    <img id="user-photo" src="" alt="Sua Foto">
+                    <button id="btn-logout" style="background:none; border:none; color:#ef4444; cursor:pointer; font-weight: bold;">Sair</button>
+                </div>
+            </div>
+        </div>
+    </header>
 
-    <main class="container">
-        <section id="editor-section" class="editor hidden">
-            <h3>✨ Nova Conquista</h3>
-            <input type="text" id="skill-input" placeholder="Título">
-            <textarea id="exp-input" placeholder="O que aprendeu?"></textarea>
-            <p style="font-size: 0.8rem;">Foto (Máx 1MB): <input type="file" id="image-input" accept="image/*"></p>
-            <button id="btn-save" class="btn-save">Publicar no Portfólio</button>
-        </section>
+    <main class="container">
+        <section id="editor-section" class="card hidden">
+            <h2>✨ Nova Conquista</h2>
+            <div class="input-group">
+                <input type="text" id="skill-input" placeholder="O que você fez? (Ex: Experimento de Química)">
+                <textarea id="exp-input" rows="3" placeholder="O que você aprendeu com isso?"></textarea>
+                <button id="btn-save" class="btn-save">Guardar no Currículo</button>
+            </div>
+        </section>
 
-        <div id="timeline"></div>
-    </main>
+        <section id="timeline">
+            <p style="text-align:center; color: #64748b;">Faça login para começar sua jornada!</p>
+        </section>
+    </main>
 
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-        import { getAuth, signInWithPopup, GoogleAuthProvider, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
-        import { getFirestore, collection, addDoc, query, where, onSnapshot, orderBy, doc, deleteDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+        import { getAuth, signInWithPopup, GoogleAuthProvider, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+        import { getFirestore, collection, addDoc, query, where, onSnapshot, orderBy } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
-        const firebaseConfig = {
-            apiKey: "AIzaSyAxWEuumY-TGqhHb1KxV6bDiQJ6ugxvJA8",
-            authDomain: "curriculovivo.firebaseapp.com",
-            projectId: "curriculovivo",
-            storageBucket: "curriculovivo.appspot.com",
-            messagingSenderId: "245934457904",
-            appId: "1:245934457904:web:0cdd30c1b145cfd4b119f5"
-        };
+        // SEUS DADOS INSERIDOS AQUI
+        const firebaseConfig = {
+            apiKey: "AIzaSyAxWEuumY-TGqhHb1KxV6bDiQJ6ugxvJA8",
+            authDomain: "curriculovivo.firebaseapp.com",
+            projectId: "curriculovivo",
+            storageBucket: "curriculovivo.firebasestorage.app",
+            messagingSenderId: "245934457904",
+            appId: "1:245934457904:web:0cdd30c1b145cfd4b119f5"
+        };
 
-        const app = initializeApp(firebaseConfig);
-        const auth = getAuth(app);
-        const db = getFirestore(app);
-        const provider = new GoogleAuthProvider();
+        // INICIALIZAÇÃO
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+        const provider = new GoogleAuthProvider();
 
-        // Login/Logout
-        document.getElementById('btn-login').onclick = () => signInWithPopup(auth, provider);
-        document.getElementById('btn-logout').onclick = () => signOut(auth);
+        // ELEMENTOS
+        const btnLogin = document.getElementById('btn-login');
+        const btnLogout = document.getElementById('btn-logout');
+        const btnSave = document.getElementById('btn-save');
+        const editorSection = document.getElementById('editor-section');
+        const userDisplay = document.getElementById('user-display');
+        const timeline = document.getElementById('timeline');
+        const userPhoto = document.getElementById('user-photo');
 
-        onAuthStateChanged(auth, (user) => {
-            if (user) {
-                document.getElementById('btn-login').classList.add('hidden');
-                document.getElementById('user-display').classList.remove('hidden');
-                document.getElementById('editor-section').classList.remove('hidden');
-                document.getElementById('user-photo').src = user.photoURL;
-                carregarFeed(user.uid);
-            } else {
-                document.getElementById('btn-login').classList.remove('hidden');
-                document.getElementById('user-display').classList.add('hidden');
-                document.getElementById('editor-section').classList.add('hidden');
-                document.getElementById('timeline').innerHTML = "";
-            }
-        });
+        // FUNÇÃO DE LOGIN
+        btnLogin.onclick = async () => {
+            try {
+                await signInWithPopup(auth, provider);
+            } catch (error) {
+                console.error("Erro no login:", error);
+                alert("Erro ao entrar com Google.");
+            }
+        };
 
-        // Função para converter imagem em texto (Base64)
-        const toBase64 = file => new Promise((resolve, reject) => {
-            const reader = new FileReader();
-            reader.readAsDataURL(file);
-            reader.onload = () => resolve(reader.result);
-            reader.onerror = error => reject(error);
-        });
+        // FUNÇÃO DE LOGOUT
+        btnLogout.onclick = () => signOut(auth);
 
-        document.getElementById('btn-save').onclick = async () => {
-            const title = document.getElementById('skill-input').value;
-            const desc = document.getElementById('exp-input').value;
-            const file = document.getElementById('image-input').files[0];
+        // MONITORAR USUÁRIO
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                btnLogin.classList.add('hidden');
+                userDisplay.classList.remove('hidden');
+                editorSection.classList.remove('hidden');
+                userPhoto.src = user.photoURL;
+                carregarExperiencias(user.uid);
+            } else {
+                btnLogin.classList.remove('hidden');
+                userDisplay.classList.add('hidden');
+                editorSection.classList.add('hidden');
+                timeline.innerHTML = '<p style="text-align:center; color: #64748b;">Faça login para ver seu currículo!</p>';
+            }
+        });
 
-            if (!title || !desc || !file) return alert("Preencha tudo!");
-            if (file.size > 1048576) return alert("Foto muito grande! Use uma de até 1MB.");
+        // SALVAR DADOS
+        btnSave.onclick = async () => {
+            const skill = document.getElementById('skill-input').value;
+            const exp = document.getElementById('exp-input').value;
 
-            document.getElementById('btn-save').innerText = "Processando...";
-            
-            try {
-                const base64Image = await toBase64(file);
-                await addDoc(collection(db, "experiencias"), {
-                    uid: auth.currentUser.uid,
-                    userName: auth.currentUser.displayName,
-                    userPhoto: auth.currentUser.photoURL,
-                    titulo: title,
-                    descricao: desc,
-                    imageUrl: base64Image, // Foto salva como texto!
-                    data: new Date()
-                });
-                document.getElementById('skill-input').value = "";
-                document.getElementById('exp-input').value = "";
-                document.getElementById('image-input').value = "";
-            } catch (e) { alert("Erro ao salvar!"); }
-            document.getElementById('btn-save').innerText = "Publicar no Portfólio";
-        };
+            if (skill.trim() && exp.trim()) {
+                btnSave.disabled = true;
+                btnSave.innerText = "Salvando...";
+                
+                try {
+                    await addDoc(collection(db, "experiencias"), {
+                        uid: auth.currentUser.uid,
+                        titulo: skill,
+                        descricao: exp,
+                        data: new Date()
+                    });
+                    document.getElementById('skill-input').value = '';
+                    document.getElementById('exp-input').value = '';
+                } catch (e) {
+                    alert("Erro ao salvar!");
+                } finally {
+                    btnSave.disabled = false;
+                    btnSave.innerText = "Guardar no Currículo";
+                }
+            } else {
+                alert("Por favor, preencha o título e a descrição.");
+            }
+        };
 
-        function carregarFeed(uid) {
-            const q = query(collection(db, "experiencias"), where("uid", "==", uid), orderBy("data", "desc"));
-            onSnapshot(q, (snapshot) => {
-                const timeline = document.getElementById('timeline');
-                timeline.innerHTML = "";
-                snapshot.forEach(docSnap => {
-                    const post = docSnap.data();
-                    const div = document.createElement('div');
-                    div.className = 'card-post';
-                    div.innerHTML = `
-                        <div class="post-header"><span>${post.userName}</span><button class="btn-delete" onclick="window.excluirPost('${docSnap.id}')">Excluir</button></div>
-                        <img src="${post.imageUrl}" class="post-image">
-                        <div class="post-content"><h3>${post.titulo}</h3><p>${post.descricao}</p></div>
-                    `;
-                    timeline.appendChild(div);
-                });
-            });
-        }
+        // CARREGAR DADOS DO ALUNO
+        function carregarExperiencias(uid) {
+            const q = query(
+                collection(db, "experiencias"), 
+                where("uid", "==", uid), 
+                orderBy("data", "desc")
+            );
 
-        window.excluirPost = async (id) => {
-            if (confirm("Apagar?")) await deleteDoc(doc(db, "experiencias", id));
-        };
-    </script>
+            onSnapshot(q, (snapshot) => {
+                if (snapshot.empty) {
+                    timeline.innerHTML = "<h2>Sua Jornada</h2><p>Você ainda não adicionou atividades. Comece agora!</p>";
+                    return;
+                }
+
+                timeline.innerHTML = "<h2>Sua Jornada</h2>";
+                snapshot.forEach((doc) => {
+                    const item = doc.data();
+                    const div = document.createElement('div');
+                    div.className = 'experience-item';
+                    div.innerHTML = `
+                        <h3>${item.titulo}</h3>
+                        <p>${item.descricao}</p>
+                    `;
+                    timeline.appendChild(div);
+                });
+            });
+        }
+    </script>
 </body>
+
 </html>
