@@ -5,123 +5,309 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Meu Mural de Conquistas 🎒</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
     
     <style>
         :root {
-            --primary: #6366f1;
-            --bg: #f1f5f9;
-            --card: #ffffff;
-            --text-title: #1e293b;
-            --text-body: #475569;
-            --radius: 16px;
+            /* Paleta Azul Moderna */
+            --primary: #2563eb;       /* Azul Royal vibrante */
+            --primary-dark: #1e40af;  /* Azul profundo para hover */
+            --accent: #38bdf8;        /* Ciano para detalhes */
+            --bg: #f0f9ff;            /* Fundo azul gelo muito claro */
+            --card-bg: #ffffff;
+            --text-main: #0f172a;     /* Azul quase preto */
+            --text-muted: #64748b;    /* Cinza azulado */
+            --radius: 20px;           /* Bordas bem arredondadas */
+            --shadow-sm: 0 4px 6px -1px rgba(37, 99, 235, 0.1);
+            --shadow-lg: 0 20px 25px -5px rgba(37, 99, 235, 0.15);
         }
 
         body {
             font-family: 'Inter', sans-serif;
             background-color: var(--bg);
-            color: var(--text-body);
+            color: var(--text-muted);
             margin: 0;
-            padding-bottom: 50px;
+            padding-bottom: 80px;
+            -webkit-font-smoothing: antialiased;
         }
 
+        /* HEADER MODERNO COM GLASSMORPHISM */
         header {
-            background: white;
-            border-bottom: 1px solid #e2e8f0;
-            padding: 15px 0;
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+            padding: 18px 0;
             position: sticky;
             top: 0;
             z-index: 1000;
-            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
+            box-shadow: var(--shadow-sm);
         }
 
-        .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+        .container { max-width: 1100px; margin: 0 auto; padding: 0 24px; }
         .header-content { display: flex; justify-content: space-between; align-items: center; }
-        h1 { font-size: 1.4rem; color: var(--primary); margin: 0; font-weight: 800; letter-spacing: -0.5px; }
-
-        #user-info { display: flex; align-items: center; gap: 12px; }
-        #user-photo { width: 38px; height: 38px; border-radius: 50%; border: 2px solid var(--primary); object-fit: cover; }
         
-        .btn { padding: 10px 18px; border-radius: 10px; border: none; font-weight: 600; cursor: pointer; transition: 0.3s; font-family: inherit; }
-        .btn-google { background: white; border: 1px solid #cbd5e1; display: flex; align-items: center; gap: 8px; }
-        .btn-logout { background: transparent; color: #ef4444; font-size: 0.9rem; }
+        h1 { 
+            font-size: 1.5rem; 
+            color: var(--text-main); 
+            margin: 0; 
+            font-weight: 800; 
+            letter-spacing: -0.03em;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        h1 i { color: var(--primary); background: #dbeafe; padding: 8px; border-radius: 12px; font-size: 1.2rem; }
 
-        /* EDITOR */
+        /* USER PROFILE */
+        #user-info { display: flex; align-items: center; gap: 15px; }
+        #user-photo { 
+            width: 42px; height: 42px; 
+            border-radius: 50%; 
+            border: 2px solid var(--accent); 
+            box-shadow: 0 0 0 4px rgba(56, 189, 248, 0.2);
+            object-fit: cover; 
+            transition: transform 0.3s;
+        }
+        #user-photo:hover { transform: scale(1.05); }
+        
+        /* BUTTONS */
+        .btn { 
+            padding: 12px 24px; 
+            border-radius: 50px; /* Pill shape */
+            border: none; 
+            font-weight: 600; 
+            cursor: pointer; 
+            transition: all 0.3s ease; 
+            font-family: inherit; 
+            font-size: 0.95rem;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .btn-google { 
+            background: white; 
+            color: var(--text-main);
+            border: 1px solid #e2e8f0; 
+            box-shadow: var(--shadow-sm);
+        }
+        .btn-google:hover { background: #f8fafc; transform: translateY(-1px); }
+
+        .btn-logout { 
+            background: #fee2e2; 
+            color: #ef4444; 
+            padding: 8px 16px;
+            font-size: 0.85rem;
+        }
+        .btn-logout:hover { background: #fecaca; }
+
+        /* EDITOR AREA */
         .editor-container {
-            max-width: 600px; margin: 30px auto;
-            background: white; padding: 25px;
+            max-width: 650px; 
+            margin: 40px auto;
+            background: white; 
+            padding: 30px;
             border-radius: var(--radius);
-            box-shadow: 0 10px 25px -5px rgba(0,0,0,0.1);
-            border-top: 5px solid var(--primary);
+            box-shadow: var(--shadow-lg);
+            border: 1px solid #e0f2fe;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Detalhe decorativo no topo do editor */
+        .editor-container::before {
+            content: '';
+            position: absolute; top: 0; left: 0; right: 0; height: 6px;
+            background: linear-gradient(90deg, var(--primary), var(--accent));
+        }
+
+        .editor-title {
+            margin: 0 0 20px 0; 
+            font-size: 1.3rem; 
+            color: var(--text-main);
+            font-weight: 700;
+            display: flex; align-items: center; gap: 10px;
         }
 
         input, textarea {
-            width: 100%; padding: 14px; margin-bottom: 12px;
-            border: 2px solid #f1f5f9; border-radius: 10px;
-            font-family: inherit; box-sizing: border-box; background: #f8fafc;
+            width: 100%; 
+            padding: 16px; 
+            margin-bottom: 16px;
+            border: 2px solid #e2e8f0; 
+            border-radius: 14px;
+            font-family: inherit; 
+            box-sizing: border-box; 
+            background: #f8fafc;
+            color: var(--text-main);
+            font-size: 1rem;
+            transition: 0.3s;
         }
-        input:focus, textarea:focus { border-color: var(--primary); outline: none; background: white; }
+        input:focus, textarea:focus { 
+            border-color: var(--primary); 
+            outline: none; 
+            background: white; 
+            box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.1);
+        }
 
-        .btn-publish { background: var(--primary); color: white; width: 100%; font-size: 1rem; margin-top: 10px; }
-        .btn-publish:hover { background: #4f46e5; transform: translateY(-2px); box-shadow: 0 4px 12px rgba(99, 102, 241, 0.4); }
+        .file-upload-label {
+            cursor: pointer; 
+            background: #eff6ff; 
+            color: var(--primary); 
+            padding: 12px 20px; 
+            border-radius: 12px; 
+            display: inline-flex; 
+            align-items: center; 
+            gap: 10px; 
+            font-weight: 600; 
+            font-size: 0.95rem;
+            border: 1px dashed var(--primary);
+            transition: 0.3s;
+            width: 100%;
+            justify-content: center;
+            box-sizing: border-box;
+        }
+        .file-upload-label:hover { background: #dbeafe; }
 
-        /* GRID PADLET */
+        .btn-publish { 
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark)); 
+            color: white; 
+            width: 100%; 
+            margin-top: 20px; 
+            font-size: 1.05rem;
+            letter-spacing: 0.5px;
+            box-shadow: 0 10px 15px -3px rgba(37, 99, 235, 0.4);
+        }
+        .btn-publish:hover { 
+            transform: translateY(-2px); 
+            box-shadow: 0 15px 20px -3px rgba(37, 99, 235, 0.5); 
+        }
+        .btn-publish:disabled { opacity: 0.7; cursor: not-allowed; }
+
+        /* GRID / FEED */
         #feed {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 25px;
-            margin-top: 40px;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 30px;
+            margin-top: 50px;
         }
 
         .post-card {
-            background: var(--card);
+            background: var(--card-bg);
             border-radius: var(--radius);
             overflow: hidden;
-            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
-            border-bottom: 4px solid var(--primary); /* Estilo Padlet */
-            transition: 0.3s;
+            box-shadow: var(--shadow-sm);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             position: relative;
             display: flex;
             flex-direction: column;
-            animation: slideIn 0.4s ease-out;
+            border: 1px solid #f1f5f9;
+            animation: slideUp 0.6s ease-out;
         }
 
-        .post-card:hover { transform: translateY(-8px); box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1); }
+        .post-card:hover { 
+            transform: translateY(-10px); 
+            box-shadow: var(--shadow-lg); 
+            border-color: #e0f2fe;
+        }
 
         .btn-delete {
-            position: absolute; top: 10px; right: 10px;
-            background: rgba(255, 255, 255, 0.8);
-            color: #ef4444; border: none; width: 32px; height: 32px;
-            border-radius: 50%; cursor: pointer; backdrop-filter: blur(4px);
-            z-index: 10; display: flex; align-items: center; justify-content: center;
-            opacity: 0; transition: 0.2s;
+            position: absolute; top: 15px; right: 15px;
+            background: rgba(255, 255, 255, 0.9);
+            color: #ef4444; border: none; 
+            width: 36px; height: 36px;
+            border-radius: 50%; cursor: pointer; 
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            display: flex; align-items: center; justify-content: center;
+            opacity: 0; transform: scale(0.8);
+            transition: all 0.3s;
+            z-index: 10;
         }
-        .post-card:hover .btn-delete { opacity: 1; }
+        .post-card:hover .btn-delete { opacity: 1; transform: scale(1); }
+        .btn-delete:hover { background: #ef4444; color: white; }
 
-        .post-img { width: 100%; aspect-ratio: 16/10; object-fit: cover; background: #e2e8f0; }
-        .post-content { padding: 20px; flex-grow: 1; }
-        .post-date { font-size: 0.7rem; color: #94a3b8; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em; }
-        .post-title { margin: 10px 0; font-size: 1.25rem; color: var(--text-title); font-weight: 700; }
-        .post-desc { font-size: 0.95rem; line-height: 1.6; color: var(--text-body); white-space: pre-wrap; }
+        .post-img { 
+            width: 100%; 
+            height: 220px; 
+            object-fit: cover; 
+            background: #e2e8f0;
+            transition: transform 0.5s; 
+        }
+        .post-card:hover .post-img { transform: scale(1.03); }
+
+        .post-content { padding: 25px; flex-grow: 1; position: relative; background: white; z-index: 1; }
+        
+        .post-date { 
+            font-size: 0.75rem; 
+            color: var(--primary); 
+            background: #eff6ff;
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-weight: 700; 
+            text-transform: uppercase; 
+            letter-spacing: 0.05em; 
+            display: inline-block;
+            margin-bottom: 8px;
+        }
+        
+        .post-title { 
+            margin: 8px 0 12px 0; 
+            font-size: 1.35rem; 
+            color: var(--text-main); 
+            font-weight: 800; 
+            line-height: 1.3;
+        }
+        
+        .post-desc { 
+            font-size: 0.95rem; 
+            line-height: 1.7; 
+            color: var(--text-muted); 
+            white-space: pre-wrap; 
+        }
 
         .hidden { display: none !important; }
-        .empty-msg { grid-column: 1 / -1; text-align: center; padding: 60px; color: #64748b; font-size: 1.1rem; }
+        
+        .empty-msg { 
+            grid-column: 1 / -1; 
+            text-align: center; 
+            padding: 80px 20px; 
+            color: var(--text-muted); 
+            background: white;
+            border-radius: var(--radius);
+            border: 2px dashed #cbd5e1;
+        }
+        .empty-msg h3 { color: var(--text-main); font-size: 1.5rem; margin-bottom: 10px; }
 
-        @keyframes slideIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes slideUp { 
+            from { opacity: 0; transform: translateY(30px); } 
+            to { opacity: 1; transform: translateY(0); } 
+        }
+
+        /* Responsividade */
+        @media (max-width: 600px) {
+            .header-content h1 span { display: none; } /* Esconde texto em mobile se necessário */
+            .editor-container { padding: 20px; margin: 20px auto; }
+            #feed { grid-template-columns: 1fr; }
+        }
     </style>
 </head>
 <body>
 
     <header>
         <div class="container header-content">
-            <h1><i class="fas fa-layer-group"></i> Currículo Vivo - PEI Marcílio Dias</h1>
+            <h1><i class="fas fa-graduation-cap"></i> <span>Currículo Vivo</span></h1>
             <div id="auth-area">
                 <button id="btn-login" class="btn btn-google">
                     <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/action/google.svg" width="18"> Entrar com Google
                 </button>
                 <div id="user-info" class="hidden">
+                    <div style="text-align:right; display:none; @media(min-width:600px){display:block;}">
+                        <small style="display:block; font-size:0.7rem; color:var(--primary); font-weight:bold;">BEM-VINDO(A)</small>
+                    </div>
                     <img id="user-photo" src="" alt="Sua Foto">
-                    <button id="btn-logout" class="btn btn-logout">Sair</button>
+                    <button id="btn-logout" class="btn btn-logout" title="Sair"><i class="fas fa-sign-out-alt"></i></button>
                 </div>
             </div>
         </div>
@@ -129,26 +315,29 @@
 
     <main class="container">
         <section id="editor" class="editor-container hidden">
-            <h2 style="margin:0 0 15px 0; font-size:1.2rem; display:flex; align-items:center; gap:8px;">
-                <i class="fas fa-pen-nib" style="color:var(--primary)"></i> O que você quer registrar?
+            <h2 class="editor-title">
+                <i class="fas fa-pen-fancy" style="color:var(--primary)"></i> Nova Conquista
             </h2>
-            <input type="text" id="input-title" placeholder="Título da atividade ou conquista">
-            <textarea id="input-desc" rows="3" placeholder="O que você aprendeu com isso? Como se sentiu?"></textarea>
+            <input type="text" id="input-title" placeholder="Título (ex: Feira de Ciências, Curso de Robótica)">
+            <textarea id="input-desc" rows="4" placeholder="Descreva sua experiência... O que você aprendeu? Quais habilidades desenvolveu?"></textarea>
             
             <div style="margin-bottom: 15px;">
-                <label for="file-upload" style="cursor:pointer; background:#eef2ff; color:var(--primary); padding:10px 15px; border-radius:8px; display:inline-flex; align-items:center; gap:8px; font-weight:600; font-size:0.9rem;">
-                    <i class="fas fa-camera"></i> Carregar Imagem
+                <label for="file-upload" class="file-upload-label">
+                    <i class="fas fa-cloud-upload-alt"></i> Escolher foto da galeria
                 </label>
                 <input type="file" id="file-upload" accept="image/*" style="display:none;">
-                <span id="file-name" style="font-size:0.8rem; margin-left:10px; color:#94a3b8;">Nenhuma foto selecionada</span>
+                <div id="file-name" style="text-align:center; font-size:0.85rem; margin-top:8px; color:#94a3b8; font-style:italic;">Nenhuma foto selecionada</div>
             </div>
 
-            <button id="btn-publish" class="btn btn-publish">Publicar no Mural</button>
+            <button id="btn-publish" class="btn btn-publish">
+                <i class="fas fa-paper-plane"></i> Publicar no Mural
+            </button>
         </section>
 
         <div id="feed">
             <div class="empty-msg">
-                <i class="fas fa-spinner fa-spin"></i> Sincronizando mural...
+                <i class="fas fa-circle-notch fa-spin" style="font-size:2rem; color:var(--primary); margin-bottom:15px;"></i>
+                <p>Carregando suas experiências...</p>
             </div>
         </div>
     </main>
@@ -168,7 +357,7 @@
             appId: "1:245934457904:web:0cdd30c1b145cfd4b119f5"
         };
 
-        // SUA CHAVE API DO IMGBB (INSERIDA!)
+        // SUA CHAVE API DO IMGBB
         const IMGBB_API_KEY = "e03de911db33120d91f2badf033ed95b"; 
 
         const app = initializeApp(firebaseConfig);
@@ -192,8 +381,14 @@
 
         // Mostrar nome do arquivo
         els.fileInput.onchange = () => {
-            els.fileName.innerText = els.fileInput.files[0]?.name || "Nenhuma foto";
-            els.fileName.style.color = "#6366f1";
+            const file = els.fileInput.files[0];
+            if(file) {
+                els.fileName.innerHTML = `<i class="fas fa-check-circle" style="color:var(--primary)"></i> ${file.name}`;
+                els.fileName.style.color = "var(--primary)";
+            } else {
+                els.fileName.innerText = "Nenhuma foto selecionada";
+                els.fileName.style.color = "#94a3b8";
+            }
         };
 
         // Login / Logout
@@ -211,7 +406,12 @@
                 els.loginBtn.classList.remove('hidden');
                 els.userInfo.classList.add('hidden');
                 els.editor.classList.add('hidden');
-                els.feed.innerHTML = '<div class="empty-msg"><i class="fas fa-lock" style="font-size:2rem; display:block; margin-bottom:15px;"></i> Faça login para ver seu mural pessoal.</div>';
+                els.feed.innerHTML = `
+                    <div class="empty-msg">
+                        <i class="fas fa-lock" style="font-size:3rem; display:block; margin-bottom:20px; color:#cbd5e1;"></i> 
+                        <h3>Área Restrita</h3>
+                        <p>Faça login para acessar e editar seu mural de conquistas.</p>
+                    </div>`;
             }
         });
 
@@ -246,13 +446,16 @@
                 });
 
                 // Limpar campos
-                els.title.value = ""; els.desc.value = ""; els.fileInput.value = ""; els.fileName.innerText = "Nenhuma foto selecionada";
+                els.title.value = ""; els.desc.value = ""; els.fileInput.value = ""; 
+                els.fileName.innerText = "Nenhuma foto selecionada";
+                els.fileName.style.color = "#94a3b8";
+
             } catch (e) {
                 console.error(e);
                 alert("Erro ao publicar: " + e.message);
             } finally {
                 els.publishBtn.disabled = false;
-                els.publishBtn.innerText = "Postar no Mural";
+                els.publishBtn.innerHTML = '<i class="fas fa-paper-plane"></i> Publicar no Mural';
             }
         };
 
@@ -263,15 +466,20 @@
             onSnapshot(q, (snapshot) => {
                 els.feed.innerHTML = "";
                 if (snapshot.empty) {
-                    els.feed.innerHTML = '<div class="empty-msg"><h3>O seu mural está pronto! 🚀</h3><p>Use o formulário acima para registrar sua primeira conquista.</p></div>';
+                    els.feed.innerHTML = `
+                        <div class="empty-msg">
+                            <i class="fas fa-rocket" style="font-size:3rem; color:var(--primary); margin-bottom:15px;"></i>
+                            <h3>O seu mural está pronto!</h3>
+                            <p>Use o formulário acima para registrar sua primeira conquista.</p>
+                        </div>`;
                     return;
                 }
 
                 snapshot.forEach(res => {
                     const post = res.data();
-                    const postId = res.id; // ID único para exclusão
+                    const postId = res.id;
                     const date = post.data?.toDate().toLocaleDateString('pt-BR', { day:'2-digit', month:'short' });
-                    const imgHtml = post.imagem ? `<img src="${post.imagem}" class="post-img" loading="lazy">` : '';
+                    const imgHtml = post.imagem ? `<div style="overflow:hidden;"><img src="${post.imagem}" class="post-img" loading="lazy"></div>` : '';
                     
                     const card = document.createElement('div');
                     card.className = 'post-card';
@@ -302,4 +510,3 @@
     </script>
 </body>
 </html>
-
