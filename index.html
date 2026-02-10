@@ -1,233 +1,307 @@
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Meu Currículo Vivo 🎒</title>
-    
-    <style>
-        /* --- ESTILO (CSS) --- */
-        :root {
-            --primary: #4A90E2;
-            --secondary: #FFD166;
-            --accent: #06D6A0;
-            --bg: #F8FAFC;
-            --text: #334155;
-        }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meu Diário de Aprendizado 🎒</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        /* --- DESIGN SYSTEM MODERNO --- */
+        :root {
+            --primary: #6366f1; /* Indigo moderno */
+            --primary-hover: #4f46e5;
+            --bg: #f3f4f6;
+            --card-bg: #ffffff;
+            --text-main: #1f2937;
+            --text-muted: #6b7280;
+            --radius: 16px;
+        }
 
-        body {
-            font-family: 'Segoe UI', system-ui, sans-serif;
-            background-color: var(--bg);
-            color: var(--text);
-            margin: 0;
-            padding-bottom: 50px;
-        }
+        body {
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+            background-color: var(--bg);
+            color: var(--text-main);
+            margin: 0;
+            line-height: 1.6;
+        }
 
-        .container { max-width: 700px; margin: 0 auto; padding: 20px; }
+        /* --- HEADER COM EFEITO DE VIDRO --- */
+        header {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(0,0,0,0.05);
+            padding: 1rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
 
-        header {
-            background: white;
-            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
-            padding: 15px 0;
-            position: sticky;
-            top: 0;
-            z-index: 100;
-        }
+        .container { max-width: 600px; margin: 0 auto; padding: 0 20px; }
+        .header-content { display: flex; justify-content: space-between; align-items: center; }
+        
+        h1 { font-size: 1.25rem; font-weight: 800; color: var(--primary); margin: 0; display: flex; align-items: center; gap: 8px; }
 
-        .header-content { display: flex; justify-content: space-between; align-items: center; }
+        /* --- PERFIL E BOTÕES --- */
+        #user-display { display: flex; align-items: center; gap: 12px; }
+        #user-photo { width: 40px; height: 40px; border-radius: 50%; object-fit: cover; border: 2px solid var(--primary); }
+        
+        .btn { padding: 10px 20px; border-radius: 12px; border: none; font-weight: 600; cursor: pointer; transition: 0.2s; font-size: 0.9rem; }
+        .btn:disabled { opacity: 0.7; cursor: not-allowed; }
+        
+        .btn-google { background: #fff; border: 1px solid #d1d5db; display: flex; align-items: center; gap: 8px; color: var(--text-main); }
+        .btn-google:hover { background: #f9fafb; }
+        
+        .btn-primary { background: var(--primary); color: white; width: 100%; box-shadow: 0 4px 6px -1px rgba(99, 102, 241, 0.4); }
+        .btn-primary:hover { background: var(--primary-hover); transform: translateY(-1px); }
+        
+        .btn-logout { background: none; border: none; color: #ef4444; font-weight: 600; cursor: pointer; font-size: 0.9rem; }
 
-        h1 { font-size: 1.5rem; margin: 0; color: var(--primary); }
+        /* --- ÁREA DE POSTAGEM (CARD) --- */
+        .card-editor {
+            background: var(--card-bg);
+            border-radius: var(--radius);
+            padding: 24px;
+            box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1);
+            margin: 24px 0;
+            border: 1px solid #e5e7eb;
+        }
 
-        .card {
-            background: white;
-            padding: 20px;
-            border-radius: 16px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
-            margin-bottom: 25px;
-            border-bottom: 4px solid var(--secondary);
-        }
+        .input-group input, .input-group textarea {
+            width: 100%; border: 2px solid #f3f4f6; border-radius: 12px; padding: 14px;
+            margin-bottom: 12px; font-family: inherit; font-size: 0.95rem; box-sizing: border-box;
+            background: #f9fafb; transition: 0.2s; outline: none;
+        }
+        .input-group input:focus, .input-group textarea:focus { border-color: var(--primary); background: white; }
 
-        .input-group input, .input-group textarea {
-            width: 100%;
-            margin-bottom: 12px;
-            padding: 12px;
-            border: 2px solid #E2E8F0;
-            border-radius: 10px;
-            box-sizing: border-box;
-            font-size: 1rem;
-            font-family: inherit;
-        }
+        /* Input de Arquivo Customizado */
+        .file-upload-wrapper {
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .file-upload-label {
+            background: #eef2ff; color: var(--primary); padding: 8px 15px;
+            border-radius: 8px; cursor: pointer; font-size: 0.9rem; font-weight: 600;
+            display: inline-flex; align-items: center; gap: 5px;
+        }
+        #file-name { font-size: 0.85rem; color: var(--text-muted); }
+        input[type="file"] { display: none; }
 
-        .btn-primary { background: var(--primary); color: white; border: none; padding: 10px 20px; border-radius: 8px; cursor: pointer; font-weight: 600; }
-        .btn-save { background: var(--accent); color: white; border: none; width: 100%; padding: 12px; border-radius: 8px; cursor: pointer; font-size: 1rem; font-weight: bold; }
-        
-        #user-display { display: flex; align-items: center; gap: 10px; }
-        #user-photo { width: 35px; height: 35px; border-radius: 50%; border: 2px solid var(--primary); }
+        /* --- TIMELINE / FEED --- */
+        .experience-item {
+            background: var(--card-bg);
+            border-radius: var(--radius);
+            margin-bottom: 30px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
+            border: 1px solid #f3f4f6;
+            animation: slideUp 0.4s ease-out;
+        }
 
-        .experience-item {
-            background: white;
-            padding: 15px;
-            margin-top: 15px;
-            border-radius: 12px;
-            border-left: 6px solid var(--primary);
-            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
-            animation: fadeIn 0.5s ease;
-        }
+        .post-img { width: 100%; max-height: 400px; object-fit: cover; display: block; background: #eee; }
+        
+        .post-content { padding: 20px; }
+        .post-meta { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+        .post-date { font-size: 0.75rem; color: #9ca3af; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; }
+        
+        .post-content h3 { margin: 0 0 8px 0; font-size: 1.25rem; color: #111827; }
+        .post-content p { color: #4b5563; font-size: 1rem; margin: 0; white-space: pre-wrap; }
 
-        .experience-item h3 { margin: 0 0 5px 0; color: var(--primary); text-transform: capitalize; }
-        .experience-item p { margin: 0; font-size: 0.95rem; line-height: 1.5; color: #475569; }
-        
-        .hidden { display: none !important; }
-
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-    </style>
+        .hidden { display: none !important; }
+        
+        @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+    </style>
 </head>
 <body>
 
-    <header>
-        <div class="container header-content">
-            <h1>🎒 Meu Currículo Vivo</h1>
-            <div id="auth-controls">
-                <button id="btn-login" class="btn-primary">Entrar com Google</button>
-                <div id="user-display" class="hidden">
-                    <img id="user-photo" src="" alt="Sua Foto">
-                    <button id="btn-logout" style="background:none; border:none; color:#ef4444; cursor:pointer; font-weight: bold;">Sair</button>
-                </div>
-            </div>
-        </div>
-    </header>
+    <header>
+        <div class="container header-content">
+            <h1><i class="fas fa-book-open"></i> Currículo Vivo</h1>
+            <div id="auth-controls">
+                <button id="btn-login" class="btn btn-google">
+                    <i class="fab fa-google"></i> Entrar
+                </button>
+                <div id="user-display" class="hidden">
+                    <img id="user-photo" src="" alt="Avatar">
+                    <button id="btn-logout" class="btn-logout">Sair</button>
+                </div>
+            </div>
+        </div>
+    </header>
 
-    <main class="container">
-        <section id="editor-section" class="card hidden">
-            <h2>✨ Nova Conquista</h2>
-            <div class="input-group">
-                <input type="text" id="skill-input" placeholder="O que você fez? (Ex: Experimento de Química)">
-                <textarea id="exp-input" rows="3" placeholder="O que você aprendeu com isso?"></textarea>
-                <button id="btn-save" class="btn-save">Guardar no Currículo</button>
-            </div>
-        </section>
+    <main class="container">
+        <section id="editor-section" class="card-editor hidden">
+            <h2 style="margin-top:0; font-size:1.1rem; color:var(--text-main);">✨ O que você aprendeu hoje?</h2>
+            <div class="input-group">
+                <input type="text" id="skill-input" placeholder="Título da conquista (Ex: Feira de Ciências)">
+                <textarea id="exp-input" rows="3" placeholder="Descreva como foi a experiência..."></textarea>
+                
+                <div class="file-upload-wrapper">
+                    <label for="file-input" class="file-upload-label">
+                        <i class="fas fa-camera"></i> Adicionar Foto
+                    </label>
+                    <span id="file-name">Nenhum arquivo</span>
+                    <input type="file" id="file-input" accept="image/*">
+                </div>
 
-        <section id="timeline">
-            <p style="text-align:center; color: #64748b;">Faça login para começar sua jornada!</p>
-        </section>
-    </main>
+                <button id="btn-save" class="btn btn-primary">Publicar no Diário</button>
+            </div>
+        </section>
 
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-        import { getAuth, signInWithPopup, GoogleAuthProvider, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
-        import { getFirestore, collection, addDoc, query, where, onSnapshot, orderBy } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+        <section id="timeline">
+            <div style="text-align:center; padding: 40px; color: #9ca3af;">
+                <i class="fas fa-lock" style="font-size: 2rem; margin-bottom: 10px;"></i>
+                <p>Faça login para acessar seu diário.</p>
+            </div>
+        </section>
+    </main>
 
-        // SEUS DADOS INSERIDOS AQUI
-        const firebaseConfig = {
-            apiKey: "AIzaSyAxWEuumY-TGqhHb1KxV6bDiQJ6ugxvJA8",
-            authDomain: "curriculovivo.firebaseapp.com",
-            projectId: "curriculovivo",
-            storageBucket: "curriculovivo.firebasestorage.app",
-            messagingSenderId: "245934457904",
-            appId: "1:245934457904:web:0cdd30c1b145cfd4b119f5"
-        };
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+        import { getAuth, signInWithPopup, GoogleAuthProvider, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+        import { getFirestore, collection, addDoc, query, where, onSnapshot, orderBy } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+        // Importando Storage para fotos
+        import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-storage.js";
 
-        // INICIALIZAÇÃO
-        const app = initializeApp(firebaseConfig);
-        const auth = getAuth(app);
-        const db = getFirestore(app);
-        const provider = new GoogleAuthProvider();
+        const firebaseConfig = {
+            apiKey: "AIzaSyAxWEuumY-TGqhHb1KxV6bDiQJ6ugxvJA8",
+            authDomain: "curriculovivo.firebaseapp.com",
+            projectId: "curriculovivo",
+            storageBucket: "curriculovivo.firebasestorage.app", // Verifique se isso está correto no seu console
+            messagingSenderId: "245934457904",
+            appId: "1:245934457904:web:0cdd30c1b145cfd4b119f5"
+        };
 
-        // ELEMENTOS
-        const btnLogin = document.getElementById('btn-login');
-        const btnLogout = document.getElementById('btn-logout');
-        const btnSave = document.getElementById('btn-save');
-        const editorSection = document.getElementById('editor-section');
-        const userDisplay = document.getElementById('user-display');
-        const timeline = document.getElementById('timeline');
-        const userPhoto = document.getElementById('user-photo');
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+        const storage = getStorage(app);
+        const provider = new GoogleAuthProvider();
 
-        // FUNÇÃO DE LOGIN
-        btnLogin.onclick = async () => {
-            try {
-                await signInWithPopup(auth, provider);
-            } catch (error) {
-                console.error("Erro no login:", error);
-                alert("Erro ao entrar com Google.");
-            }
-        };
+        // Elementos DOM
+        const els = {
+            login: document.getElementById('btn-login'),
+            logout: document.getElementById('btn-logout'),
+            save: document.getElementById('btn-save'),
+            editor: document.getElementById('editor-section'),
+            userDisplay: document.getElementById('user-display'),
+            timeline: document.getElementById('timeline'),
+            photo: document.getElementById('user-photo'),
+            fileInput: document.getElementById('file-input'),
+            fileName: document.getElementById('file-name')
+        };
 
-        // FUNÇÃO DE LOGOUT
-        btnLogout.onclick = () => signOut(auth);
+        // UI Helpers
+        els.fileInput.onchange = () => {
+            if(els.fileInput.files.length > 0) {
+                els.fileName.textContent = els.fileInput.files[0].name;
+            }
+        };
 
-        // MONITORAR USUÁRIO
-        onAuthStateChanged(auth, (user) => {
-            if (user) {
-                btnLogin.classList.add('hidden');
-                userDisplay.classList.remove('hidden');
-                editorSection.classList.remove('hidden');
-                userPhoto.src = user.photoURL;
-                carregarExperiencias(user.uid);
-            } else {
-                btnLogin.classList.remove('hidden');
-                userDisplay.classList.add('hidden');
-                editorSection.classList.add('hidden');
-                timeline.innerHTML = '<p style="text-align:center; color: #64748b;">Faça login para ver seu currículo!</p>';
-            }
-        });
+        // Auth Logic
+        els.login.onclick = async () => {
+            try { await signInWithPopup(auth, provider); } 
+            catch (error) { alert("Erro no login: Verifique 'Authorized Domains' no Firebase Console."); console.error(error); }
+        };
+        els.logout.onclick = () => signOut(auth);
 
-        // SALVAR DADOS
-        btnSave.onclick = async () => {
-            const skill = document.getElementById('skill-input').value;
-            const exp = document.getElementById('exp-input').value;
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                els.login.classList.add('hidden');
+                els.userDisplay.classList.remove('hidden');
+                els.editor.classList.remove('hidden');
+                els.photo.src = user.photoURL;
+                carregarFeed(user.uid);
+            } else {
+                els.login.classList.remove('hidden');
+                els.userDisplay.classList.add('hidden');
+                els.editor.classList.add('hidden');
+                els.timeline.innerHTML = '<div style="text-align:center; padding: 40px; color: #9ca3af;"><i class="fas fa-lock" style="font-size: 2rem; margin-bottom: 10px;"></i><p>Faça login para acessar seu diário.</p></div>';
+            }
+        });
 
-            if (skill.trim() && exp.trim()) {
-                btnSave.disabled = true;
-                btnSave.innerText = "Salvando...";
-                
-                try {
-                    await addDoc(collection(db, "experiencias"), {
-                        uid: auth.currentUser.uid,
-                        titulo: skill,
-                        descricao: exp,
-                        data: new Date()
-                    });
-                    document.getElementById('skill-input').value = '';
-                    document.getElementById('exp-input').value = '';
-                } catch (e) {
-                    alert("Erro ao salvar!");
-                } finally {
-                    btnSave.disabled = false;
-                    btnSave.innerText = "Guardar no Currículo";
-                }
-            } else {
-                alert("Por favor, preencha o título e a descrição.");
-            }
-        };
+        // Salvar Post
+        els.save.onclick = async () => {
+            const title = document.getElementById('skill-input').value;
+            const desc = document.getElementById('exp-input').value;
+            const file = els.fileInput.files[0];
 
-        // CARREGAR DADOS DO ALUNO
-        function carregarExperiencias(uid) {
-            const q = query(
-                collection(db, "experiencias"), 
-                where("uid", "==", uid), 
-                orderBy("data", "desc")
-            );
+            if (!title || !desc) return alert("Preencha o título e a descrição!");
 
-            onSnapshot(q, (snapshot) => {
-                if (snapshot.empty) {
-                    timeline.innerHTML = "<h2>Sua Jornada</h2><p>Você ainda não adicionou atividades. Comece agora!</p>";
-                    return;
-                }
+            els.save.disabled = true;
+            els.save.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Publicando...';
 
-                timeline.innerHTML = "<h2>Sua Jornada</h2>";
-                snapshot.forEach((doc) => {
-                    const item = doc.data();
-                    const div = document.createElement('div');
-                    div.className = 'experience-item';
-                    div.innerHTML = `
-                        <h3>${item.titulo}</h3>
-                        <p>${item.descricao}</p>
-                    `;
-                    timeline.appendChild(div);
-                });
-            });
-        }
-    </script>
+            try {
+                let imageUrl = null;
+
+                // 1. Upload da Imagem (se houver)
+                if (file) {
+                    const storageRef = ref(storage, `posts/${auth.currentUser.uid}/${Date.now()}_${file.name}`);
+                    const snapshot = await uploadBytes(storageRef, file);
+                    imageUrl = await getDownloadURL(snapshot.ref);
+                }
+
+                // 2. Salvar no Firestore
+                await addDoc(collection(db, "experiencias"), {
+                    uid: auth.currentUser.uid,
+                    titulo: title,
+                    descricao: desc,
+                    imagem: imageUrl, // Salva o link da imagem
+                    data: new Date()
+                });
+
+                // Limpar Form
+                document.getElementById('skill-input').value = '';
+                document.getElementById('exp-input').value = '';
+                els.fileInput.value = '';
+                els.fileName.textContent = 'Nenhum arquivo';
+
+            } catch (e) {
+                console.error(e);
+                alert("Erro ao salvar. Verifique as Regras de Segurança do Firebase.");
+            } finally {
+                els.save.disabled = false;
+                els.save.innerHTML = 'Publicar no Diário';
+            }
+        };
+
+        function carregarFeed(uid) {
+            const q = query(collection(db, "experiencias"), where("uid", "==", uid), orderBy("data", "desc"));
+
+            onSnapshot(q, (snapshot) => {
+                if (snapshot.empty) {
+                    els.timeline.innerHTML = "<div style='text-align:center; color:#6b7280; margin-top:40px'><h3>Seu diário está vazio 🍃</h3><p>Adicione sua primeira conquista acima!</p></div>";
+                    return;
+                }
+
+                els.timeline.innerHTML = "";
+                snapshot.forEach((doc) => {
+                    const data = doc.data();
+                    const date = data.data?.toDate().toLocaleDateString('pt-BR', { day: '2-digit', month: 'long', year: 'numeric' }) || 'Data desconhecida';
+                    
+                    const div = document.createElement('div');
+                    div.className = 'experience-item';
+                    
+                    // Renderiza imagem apenas se existir
+                    const imgHtml = data.imagem ? `<img src="${data.imagem}" class="post-img" alt="${data.titulo}">` : '';
+
+                    div.innerHTML = `
+                        ${imgHtml}
+                        <div class="post-content">
+                            <div class="post-meta">
+                                <span class="post-date">${date}</span>
+                            </div>
+                            <h3>${data.titulo}</h3>
+                            <p>${data.descricao}</p>
+                        </div>
+                    `;
+                    els.timeline.appendChild(div);
+                });
+            });
+        }
+    </script>
 </body>
-
 </html>
